@@ -40,7 +40,6 @@ curl -X POST "https://api.singularapi.com/api/v1/finance/00234000054/accounts/"
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
   "message": "Account created successfully",
   "data": {
 	  "account_number": "0123456784",
@@ -102,7 +101,6 @@ curl -X PUT "https://api.singularapi.com/api/v1/finance/00234000054/accounts/009
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
   "message": "Account reactivated successfully",
   "data": {
 		"account_number": "0099332211",
@@ -137,7 +135,7 @@ Retrieve details of an account.
 
 
 ```Shell
-curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/0099332211?account_id=939388374747"
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1010119934"
   -H "Authorization: token-obtained-from-authorization"
 	-H 'Content-Type: application/json'
 ```
@@ -147,21 +145,21 @@ curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/009
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
   "message": "Account Details retrieved successfully",
   "data": {
 	  "account_number": "1010119934",
-	  "account_id": "",
-      "name": "Ado John Sule",
-      "currency": "NGN",
-	  "balance": 1232321.98,
-      "account_opening_date": "2017-01-13",
-      "last_transaction_date": "2019-03-15T07:05:59.524Z",
-      "account_type": "Savings",
-      "bvn": "221422456789",
-      "phone_number": "09091234567",
-      "email": "ado.john@example.com",
-      "account_status": "Active"
+	  "account_id": "878788909876",
+		"name": "Ado John Sule",
+		"currency": "NGN",
+	  "current_balance": 1232321.98,
+		"book_balance": 1332321.98,
+		"account_opening_date": "2017-01-13",
+		"last_transaction_date": "2019-03-15T07:05:59.524Z",
+		"account_type": "Savings",
+		"phone_number": "09091234567",
+		"email": "ado.john@example.com",
+		"account_status": "Active",
+		"customer_id": "123222132"
 	}
  }
 ```
@@ -180,7 +178,7 @@ account_number | string | Specify Account Holder account Number
 
 Parameter | Type | Description
 --------- | ------- | -----------
-account_id | string | (Optional). Specify Account Holder account number
+account_id | string | (Optional). Specify Account Holder Account ID
 
 
 
@@ -188,30 +186,10 @@ account_id | string | (Optional). Specify Account Holder account number
 
 Retrieves all accounts belonging to a customer.
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/1234567890/summary"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/0099332211/summary"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
 > The above command returns JSON structured like this:
@@ -219,33 +197,32 @@ let max = api.kittens.get(2);
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
   "message": "All account(s) retrieved successfully",
   "data": {
 	"name": "Ado John Sule",
-	"bvn": "221422456789",
 	"phone_number": "09091234567",
 	"email": "ado.john@example.com",
+	"customer_id": "123222132",
 	"accounts":[
 		{
-		  "account_number": "1010119934",
-		  "account_id": "",
-		  "currency": "NGN",
-		  "balance": 23098.34,
-		  "account_opening_date": "2017-01-13",
-		  "last_transaction_date": "2019-03-15T07:05:59.524Z",
-		  "account_type": "Savings",
-		  "account_status": "Active"
+			"account_number": "1010119934",
+			"account_id": "878788909876",
+			"currency": "NGN",
+			"current_balance": 1232321.98,
+			"book_balance": 1332321.98,
+			"last_transaction_date": "2019-03-15T07:05:59.524Z",
+			"account_type": "Savings",
+			"account_status": "Active",
 		},
 		{
-		  "account_number": "0098767847",
-		  "account_id": "",
-		  "currency": "EUR",
-		  "balance": 234.56,
-		  "account_opening_date": "2019-01-19",
-		  "last_transaction_date": "2019-03-15T07:05:59.524Z",
-		  "account_type": "Current",
-		  "account_status": "Inactive"
+			"account_number": "3455556721",
+			"account_id": "",
+			"currency": "EUR",
+			"current_balance": 543.00,
+			"book_balance": 543.00,
+			"last_transaction_date": "2016-02-05T18:21:05.619Z",
+			"account_type": "Savings",
+			"account_status": "Inactive",
 		}
 	]
   }
@@ -268,43 +245,16 @@ Parameter | Type | Description
 --------- | ------- | -----------
 account_id | string | (Optional). Specify Account Holder account number
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
 
+## Retrieve transaction history
 
-## Make transaction on an account
+Retrieve transaction history of a given account as an array of transactions. Depending on implementation and request parameters sent, you may get different response details.
 
-
-## Retrieve account's transaction history
-
-Retrieve transaction history of a given account.
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/1234567890/transactions"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/transactions"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
 > The above command returns JSON structured like this:
@@ -312,23 +262,28 @@ let max = api.kittens.get(2);
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
-  "message": "Successful",
+  "message": "Successfully Retrieve Transactions",
   "data": {
 		"transactions": [
 		  {
-			"transaction_id": "5GH788HG89K",
+			"transaction_id": "1653372928889",
 			"transaction_date": "2017-09-03",
-			"amount": 8900.45,
+			"transaction_amount": 8900.45,
 			"currency": "NGN",
-			"transaction_type": "credit"
+			"transaction_type": "debit",
+			"transaction_status": "Approved",
+			"transaction_description": "Payment for UTIL/879811AA",
+			"transaction_reference": "Paid for Electricity"
 		  },
 		  {
-			"transaction_id": "9LO988HG89K",
-			"transaction_date": "2017-09-10",
+			"transaction_id": "8d82f1c6-c772-454b-bf11-4a7790cac887",
+			"transaction_date": "2018-09-10",
 			"amount": 3000.00,
 			"currency": "NGN",
-			"transaction_type": "debit"
+			"transaction_type": "debit",
+			"transaction_status": "Failed",
+			"transaction_description": "LAG/1546 - Fee for Exit Toll",
+			"transaction_reference": "LAG/1546 - Fee for Exit Toll"
 		  }
 		]
   }
@@ -349,12 +304,13 @@ account_number | string | Specify Account Holder account number
 
 Parameter | Type | Description
 --------- | ------- | -----------
-account_id | string | (Optional). Specify Account Holder account number
-dateFrom | string | (Optional). Starting date (inclusive the date dateFrom) of the transaction list 
-dateTo | string | (Optional). End date (inclusive the data dateTo) of the transaction list
+transaction_from_date | string | Starting range date for transactions in ISO 8601 format 'YYYY-MM-DD'
+transaction_to_date | string | Ending range date for transactions in ISO 8601 format 'YYYY-MM-DD'
+last_number_of_transactions | string | (Optional) Specify last number of transactions
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+<aside class="notice">
+Most financial institutions have different request requirements
+- some require either transaction_from_date or both transaction_from_date and transaction_to_date
 </aside>
 
 
@@ -363,60 +319,46 @@ Remember — a happy kitten is an authenticated kitten!
 
 ## Get account activity statement
 
-Get account activity statement
+Retrieve the activity statement on an account
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/statement"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/1234567890/statement"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
   "statusCode": 00,
-  "description": "Successful",
-  "message": " Success ",
+  "message": "Account Statement Retrieved",
   "data": {
+		"account_number": "1234567890",
+		"available_balance": 1000900.45,
+		"book_balance": 1000900.45,
+		"currency": "NGN",
 		"transactions": [
 		  {
+			"posted_date": "2017-09-03",
 			"transaction_id": "5GH788HG89K",
 			"transaction_date": "2017-09-03",
-			"Beneficiary": "Taiwo Oyindamola",
+			"transaction_description": "PAYT FROM XYZ INDIVIDUAL",
+			"transaction_type": "debit",
 			"amount": 8900.45,
-			"Balance": 1,000,008,900.45,
-			"currency": "NGN",
-			"transaction_type": "credit"
+			"balance": 1000900.45,
+			"currency": "NGN"
 		  },
 		  {
-			"transaction_id": "9LO988HG89K",
-			"transaction_date": "2017-09-10",
-			"Beneficiary": "Taiwo Joy",
+			"posted_date": "2017-09-03",
+			"transaction_id": "345556012334",
+			"transaction_date": "2017-09-03",
+			"transaction_description": "PAYT FROM XYZ INDIVIDUAL",
+			"transaction_type": "credit",
 			"amount": 3000.00,
-			"Balance": 900,008,900.45,
-			"currency": "NGN",
-			"transaction_type": "debit"
+			"balance": 1003900.45,
+			"currency": "NGN"
 		  }
 		]
   }
@@ -437,16 +379,12 @@ account_number | string | Specify Account Holder account number
 
 Parameter | Type | Description
 --------- | ------- | -----------
-account_id | string | (Optional). Specify Account Holder account number
-startDate | string | Specify Account Holder First Name
-endDate | string | Specify Account Holder First Name
-filterType | string | Specify Account Holder First Name
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-
+from_date | string | Required. Starting range date for statement in ISO 8601 format 'YYYY-MM-DD'
+to_date | string | Required. Ending range date for statement in ISO 8601 format 'YYYY-MM-DD'
+transaction_type | string | Optional. Specify type of transactions to be included - debit, credit or both (default)
+delivery_format | string | Optional. Specify format of the response received. Options are json (default), csv
+delivery_channel | string | Optional. Specify channel for delivery. Options are online (default), email (requires supplying delivery_email as a parameter)
+delivery_email | string | Required if delivery_channel is email. Specify Email Address to receive statement.
 
 
 
@@ -454,30 +392,10 @@ Remember — a happy kitten is an authenticated kitten!
 
 Retrieve balance of a specified account.
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/1234567890/balance"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/balance"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
 > The above command returns JSON structured like this:
@@ -485,13 +403,13 @@ let max = api.kittens.get(2);
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
   "message": "Account balance retrieved successfully",
   "data": {
-		"account_number": "",
+		"account_number": "1234567890",
 		"account_id": "",
 		"currency": "NGN",
-		"balance": 800000.00
+		"available_balance": 800000.00,
+		"book_balance": 800000.00
   }
 }
 ```
@@ -506,65 +424,67 @@ Parameter | Type | Description
 --------- | ------- | -----------
 account_number | string | Specify Account Holder account number
 
-### Query Parameter(s)
-
-Parameter | Type | Description
---------- | ------- | -----------
-account_id | string | (Optional). Specify Account Holder account number
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
 
 
 ## Get account beneficiaries details
 
 Retrieve saved beneficiaries on an account.
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/beneficiaries"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/1234567890/beneficiaries"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
   "message": "Beneficiary details retrieved successfully",
   "data": [
 		{
-			"name": "Afus Jide",
+			"account_id": "",
+			"beneficiary_id": "",
+			"reference": "",
+			"beneficiary_name": "Afus Jide",
+			"bank_name": "",
+			"bank_code": "",
+			"sort_code": "",
 			"account_number": "1234567890",
-			"account_id": "1234567890"
+			"iban": "",
+			"routing_number": "",
+			"bank_address": "",
+			"bank_city": "",
+			"bank_state": "",
+			"bank_country": "",
+			"beneficiary_address": "",
+			"beneficiary_city": "",
+			"beneficiary_state": "",
+			"beneficiary_country": "",
+			"supplementary_data": ""
 		},
 		{
-			"name": "Bimbola Gold",
-			"account_number": "0098789099",
-			"account_id": "0098789099"
+			"account_id": "",
+			"beneficiary_id": "",
+			"reference": "Club Payments Monthly",
+			"beneficiary_name": "Bimbola Ahmed",
+			"bank_name": "XYZ Bank",
+			"bank_code": "098",
+			"sort_code": "349087",
+			"account_number": "0987654321",
+			"iban": "",
+			"routing_number": "",
+			"bank_address": "",
+			"bank_city": "",
+			"bank_state": "",
+			"bank_country": "Nigeria",
+			"beneficiary_address": "",
+			"beneficiary_city": "",
+			"beneficiary_state": "",
+			"beneficiary_country": "",
+			"supplementary_data": ""
 		}
   ]
   
@@ -585,15 +505,7 @@ account_number | string | Specify Account Holder account number
 
 Parameter | Type | Description
 --------- | ------- | -----------
-account_id | string | (Optional). Specify Account Holder account number
-
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-
-
+account_id | string | (Conditional). Some financial institutions require specifying Account Holder account number
 
 
 
