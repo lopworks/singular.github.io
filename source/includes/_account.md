@@ -458,7 +458,7 @@ curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/123
 			"bank_address": "",
 			"bank_city": "",
 			"bank_state": "",
-			"bank_country": "",
+			"bank_country": "Nigeria",
 			"beneficiary_address": "",
 			"beneficiary_city": "",
 			"beneficiary_state": "",
