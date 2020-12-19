@@ -468,7 +468,6 @@ delivery_channel | string | Optional. Specify channel for delivery. Options are 
 delivery_email | string | Required if delivery_channel is email. Specify Email Address to receive statement.
 
 
-
 ## Get account balance
 
 Retrieve balance of a specified account.
