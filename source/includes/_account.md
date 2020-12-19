@@ -61,8 +61,9 @@ title | string | Specify Account Holder Formal title
 first_name | string | Specify Account Holder First Name
 middle_name | string | Optional. Specify Account Holder Middle Name
 last_name | string | Specify Account Holder Last Name
+mothers_maiden_name | string | Specify Mother's Maiden Name
 gender | string | Specify Account Holder Gender
-date_of_birth | string | Specify Account Holder Date of Birth
+date_of_birth | string | Specify Account Holder Date of Birth in ISO 8601 format 'YYYY-MM-DD'
 address | string | Specify Account Holder Street Address
 city | string | Specify Account Holder City
 country | string | Specify Account Holder Country
@@ -151,15 +152,15 @@ curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/101
 	  "account_id": "878788909876",
 		"name": "Ado John Sule",
 		"currency": "NGN",
-	  "current_balance": 1232321.98,
+		"available_balance": 1232321.98,
 		"book_balance": 1332321.98,
 		"account_opening_date": "2017-01-13",
 		"last_transaction_date": "2019-03-15T07:05:59.524Z",
 		"account_type": "Savings",
-		"phone_number": "09091234567",
-		"email": "ado.john@example.com",
 		"account_status": "Active",
-		"customer_id": "123222132"
+		"customer_id": "123222132",
+		"account_nickname": "My Pacer",
+		"product_type": "Fast Pacer Saving Product"
 	}
  }
 ```
@@ -208,7 +209,7 @@ curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/009
 			"account_number": "1010119934",
 			"account_id": "878788909876",
 			"currency": "NGN",
-			"current_balance": 1232321.98,
+			"available_balance": 1232321.98,
 			"book_balance": 1332321.98,
 			"last_transaction_date": "2019-03-15T07:05:59.524Z",
 			"account_type": "Savings",
@@ -243,7 +244,7 @@ account_number | string | Specify Account Holder account number
 
 Parameter | Type | Description
 --------- | ------- | -----------
-account_id | string | (Optional). Specify Account Holder account number
+account_id | string | (Conditional). Specify Account Holder account identification
 
 
 
@@ -314,6 +315,86 @@ Most financial institutions have different request requirements
 </aside>
 
 
+## Retrieve transaction details
+
+Retrieve detailed data associated with a transaction
+
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/transactions/{transaction_id}"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status_code": 00,
+  "message": "Transaction details retrieved successfully",
+  "data": {
+		
+		  "account_number": "1234567890",
+			"account_id": "3454667098",
+		  "transaction_type": "TRANSFER",
+		  "transaction_description": "INTEREST PAYMENT",
+		  "amount": 50.55,
+		  "currency": "NGN",
+		  "transaction_date": "2017-12-21",
+		  "transaction_fee_type": "INTEREST",
+		  "transaction_fee": 15.15,
+		  "transaction_status": "Completed",
+		  "transaction_posting_date": "2017-26-12",
+		  "transaction_reference_number": "889409390NM8300",
+		  "customer_name": "John Smith",
+		  
+		  "beneficiary_bank_details": {
+				"full_name": "Albert Neigh",
+				"account_number": "XXXXXX4051",
+				"sort_code": "",
+				"bank_name": "XYZ Bank",
+				"bank_code": "044",
+				"iban": "",
+				"routing_number": "",
+				"address": "",
+				"city": "",
+				"state": "",
+				"country": "Ghana",
+				"intermediary_banks": [
+					{
+						"account_number": "XXXXXX2391",
+						"sort_code": "778823",
+						"bank_name": "ABC Bank",
+						"bank_code": "",
+						"iban": "GB009322992391778823",
+						"routing_number": "",
+						"address": "",
+						"city": "",
+						"state": "",
+						"country": "UK",						
+					}
+				]
+		  }		  
+		
+  }
+}
+```
+
+### HTTP Request
+
+`GET /accounts/{account_number}/transactions/{transaction_id}
+
+### Path Parameter(s)
+
+Parameter | Type | Description
+--------- | ------- | -----------
+account_number | string | Specify Account Holder account number
+transaction_id | string | Reference ID to uniquely identify the transaction.This is applicable for successful transactions.
+
+### Query Parameter(s)
+
+Parameter | Type | Description
+--------- | ------- | -----------
+account_id | string | (Optional). Specify Account Holder account identifier
 
 
 
@@ -382,7 +463,7 @@ Parameter | Type | Description
 from_date | string | Required. Starting range date for statement in ISO 8601 format 'YYYY-MM-DD'
 to_date | string | Required. Ending range date for statement in ISO 8601 format 'YYYY-MM-DD'
 transaction_type | string | Optional. Specify type of transactions to be included - debit, credit or both (default)
-delivery_format | string | Optional. Specify format of the response received. Options are json (default), csv
+delivery_format | string | Optional. Specify format of the response received. Options are json (default), csv, pdf
 delivery_channel | string | Optional. Specify channel for delivery. Options are online (default), email (requires supplying delivery_email as a parameter)
 delivery_email | string | Required if delivery_channel is email. Specify Email Address to receive statement.
 
@@ -409,7 +490,8 @@ curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/123
 		"account_id": "",
 		"currency": "NGN",
 		"available_balance": 800000.00,
-		"book_balance": 800000.00
+		"book_balance": 800000.00,
+		"credit_debit_indicator": "credit"
   }
 }
 ```
@@ -513,30 +595,10 @@ account_id | string | (Conditional). Some financial institutions require specify
 
 Give an instruction on an account.
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/1234567890/instruction"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```Shell
+curl -X POST "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/instruction"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
 > The above command returns JSON structured like this:
@@ -573,42 +635,16 @@ startDate | string | Specify effective start date
 endDate | string | Specify termination date of instruction
 remit_account_id | string | Specify Account to be credited
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
 
+## Retrieve account standing order
 
+Retrieve standing order details on an account. This is retrieved as an array of standing orders on an account.
 
-
-## Manage account standing order
-
-Manage account standing order
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/1234567890/sorder"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/sorder"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
 > The above command returns JSON structured like this:
@@ -616,12 +652,37 @@ let max = api.kittens.get(2);
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
-  "message": "Standing order created successfully",
+  "message": "Standing order retrieved successfully",
   "data": {
-		"account_number": "1234567890",
-		"account_id": "1234567890",
-		"reference_id": "6789029286354"
+		"sorder": [
+			{
+				"account_number": "1234567890",
+				"account_id": "1234567890",
+				"reference": "Monthly Salary Payment",
+				"frequency": "IntrvlDay:15",
+				"sorder_id": "12323455555",
+				"currency": "NGN",
+				"first_payment_date": "",
+				"first_payment_amount": "",
+				"next_payment_date": "",
+				"next_payment_amount": "",
+				"final_payment_date": "",
+				"final_payment_amount": "",
+				"sorder_status": "",
+				"creditor_account": {
+					"name": "Phillip Collins",
+					"account_number": "23449900988",
+					"sort_code": "75655",
+					"bank_code": "054",
+					"country": "Nigeria",
+					"iban": "",
+					"routing_number": "",
+					"address": "",
+					"city": "",
+					"state": ""
+				}
+			}
+		]
   }
 }
 ```
@@ -640,18 +701,85 @@ account_number  | string | Specify Account Holder First Name
 
 Parameter | Type | Description
 --------- | ------- | -----------
-amount | string | Specify Amount
-start_date | string | Specify effective start date
-end_date | string | Specify termination date of a standing order
-frequency | string | (Optional). frequency of payment between the start and end dates 
-narration | string | (Optional). Purpose for the standing order
-beneficiary_name | string | Name of the beneficiary to the standing order
-beneficiary_account | string | Account Id/number of the beneficiary to the standing order
+account_id | string | (Conditional). Specify Account Holder account identification
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
+### Response Body
+
+frequency - For standing order frequency format, the Open Banking UK format is adopted and examples may be accessed at [link] (https://openbankinguk.github.io/read-write-api-site3/v3.1.7/resources-and-data-models/aisp/standing-orders.html#frequency-examples)
+
+
+
+## Retrieve account direct debit
+
+Retrieve direct debit details on an account. This is retrieved as an array of direct debit mandates on an account.
+
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/direct-debit"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status_code": 00,
+  "message": "Direct Debit Mandates retrieved successfully",
+  "data": {
+		"direct_debit": [
+			{
+				"account_number": "1234567890",
+				"account_id": "1234567890",
+				"reference": "Monthly Salary Payment",
+				"frequency": "IntrvlDay:15",
+				"direct_debit_id": "12323455555",
+				"currency": "NGN",
+				"direct_debit_name": "PAYMENT FOR ELECTRICITY",
+				"mandate_identification": "Electricty Payment",  
+				"previous_payment_date": "",
+				"previous_payment_amount": "",
+				"next_payment_date": "",
+				"next_payment_amount": "",
+				"direct_debit_status": "",
+				"creditor_account": {
+					"name": "Phillip Collins",
+					"account_number": "23449900988",
+					"sort_code": "75655",
+					"bank_code": "054",
+					"country": "Nigeria",
+					"iban": "",
+					"routing_number": "",
+					"address": "",
+					"city": "",
+					"state": ""
+				}
+			}
+		]
+  }
+}
+```
+
+### HTTP Request
+
+`POST /accounts/{account_number}/direct-debit`
+
+### Path Parameters
+
+Parameter | Type | Description
+--------- | ------- | -----------
+account_number  | string | Specify Account Holder First Name
+
+### Body Parameters
+
+Parameter | Type | Description
+--------- | ------- | -----------
+account_id | string | (Conditional). Specify Account Holder account identification
+
+
+### Response Body
+
+frequency - For direct debit frequency format, the Open Banking UK format is adopted and examples may be accessed at [link] (https://openbankinguk.github.io/read-write-api-site3/v3.1.7/resources-and-data-models/aisp/standing-orders.html#frequency-examples)
 
 
 
@@ -659,30 +787,11 @@ Remember — a happy kitten is an authenticated kitten!
 
 Retrieve the rate on an account.
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/rate"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/1234567890/rate"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
 ```
 
 > The above command returns JSON structured like this:
@@ -718,44 +827,17 @@ Parameter | Type | Description
 account_id | string | (Optional). Specify the account number 
 
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-
-
-
-
 
 
 ## Get account product details
 
 Get account product details
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/product"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/1234567890/product"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
 ```
 
 > The above command returns JSON structured like this:
@@ -795,42 +877,16 @@ Parameter | Type | Description
 --------- | ------- | -----------
 account_id | string | (Optional). Specify the account number 
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
 
+## Retrieve products on account
 
+Retrieve details of the product an account belongs to. Details will include fees/charges and product information
 
-
-## Retrieve account's transaction history Details
-
-Retrieve transaction details data associated with a transactionReferenceId
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/v1/accounts/{account_number}/transactions/{transactionReferenceId}"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/product"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
 > The above command returns JSON structured like this:
@@ -838,233 +894,70 @@ let max = api.kittens.get(2);
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
-  "message": "Successful",
+  "message": "Account product details retrieved successfully",
   "data": {
-		
-		  "account_number": "XXXXXX2364",
-		  "bank_name": "HSBC Bank",
-		  "transaction_type": "TRANSFER",
-		  "transaction_description": "INTEREST PAYMENT",
-		  "amount": 50.55,
-		  "currency": "NGN",
-		  "transaction_date": "2017-12-21",
-		  "transaction_fee_type": "INTEREST",
-		  "transaction_fee": 15.15,
-		  "transaction_status": "NEW",
-		  "transaction_posting_date": "2017-26-12",
-		  "transaction_reference_number": "889409390NM8300",
-		  "customer_name": John Smith,
-		  
-		  "beneficiary_bank_details": {
-			"full_name": "Albert Neigh",
-			"account_number": "XXXXXX2391",
-			"bank_name": "HSBC Bank"
-		  }		  
-		
-  }
-}
-```
+		"account_number": "1234567890",
+		"account_id": "23245567809",
+		"currency": "NGN",
+		"product": {
+			"product_id": "FCM12002",
+			"product_type": "Current Account",
+			"product_name": "High Achiever Select Account",
+			"balance_type": "ASSET",
+			"fee_models": {
+				"credit_interest": {
 
-### HTTP Request
+				},
+				"loan_interest": {
 
-`GET /accounts/{account_number}/transactions/{transactionReferenceId}
+				},
+				"repayment":{
 
-### Path Parameter(s)
+				},
+				"overdraft": {
 
-Parameter | Type | Description
---------- | ------- | -----------
-account_number | string | Specify Account Holder account number
-transaction_reference_id | string | Reference Id to uniquely identify the transaction.This is applicable for successful transactions.
+				},
+				"other_fees_charges": {
 
-### Query Parameter(s)
+				},
 
-Parameter | Type | Description
---------- | ------- | -----------
-account_id | string | (Optional). Specify Account Holder account number
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-
-
-## Retrieve issued devices details
-
-Retrieve details about issued devices or inventory .
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/issuedDevice/IDIR795386"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "status_code": 00,
-  "description": "Successful",
-  "message": "Issued device details retrieved successfully",
-  "data": {
-		  "issuedDeviceInstanceRecord": {
-			"issuedDeviceType": "string",
-			"issuedDeviceDescription": "string",
-			"issuedDeviceProperty": {
-			  "issuedDevicePropertyType": {
-				"issuedDevicePropertyValue": "string"
-			  },
-			  "issuedDeviceStatus": "string"
-			}
-		  }
-		}
- }
-```
-
-### HTTP Request
-
-`GET /accounts/issuedDevice/{reference_id}`
-
-### Path Parameter(s)
-
-Parameter | Type | Description
---------- | ------- | -----------
-issuedDeviceInstanceReference | string |Reference to the Issued Device instance
-
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-
-
-## Initiate service fees 
-
-Initiate service fees on an account product
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/account/servicefees/initiation"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "status_code": 00,
-  "description": "Successful",
-  "message": "Service fee initiated successfully",
-  "data": {
-			"date": "09-22-2018"
-			  "reference_id": "SFIR735161",
-			  "serviceFeesInstanceReference": "SFIAR706075",
-			  "serviceFeesInstanceStatus": "string",
-			  "serviceFeesInstanceRecord": {
-				"feeConfigurationProfile": {
-				  "feeDefinition": "string"
-				}
-			  }
-			}
-  
-
+			},
+		},
+		"date": "09-22-2018"
+	}
  }
 ```
 
 
 ### HTTP Request
 
-`POST /accounts/account/servicefees/initiation`
+`POST /accounts/account/{account_number}/product`
 
 ### Body Parameters
 
 Parameter | Type | Description
 --------- | ------- | -----------
 product_reference | string | productInstanceReference
-savingsAccountNumber | string | savingsAccountNumber
-accountType | string | accountType
-accountCurrency | string | accountCurrency
-taxReference | string | taxReference
+account_number | string | savingsAccountNumber
+account_type | string | accountType
+account_currency | string | accountCurrency
+tax_reference | string | taxReference
 date | string | date
 linkedAccounts.linkType | string | date
 linkedAccounts.accountDetails | string | date
 
 
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-
 
 ## Retrieve account lien details.
 
-Retrieve details about an active account lien .
+Retrieve details about an active account lien. The is returned as an array of liens placed on the account.
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/lien"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/123456/lien​/4567"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
 ```
 
 > The above command returns JSON structured like this:
@@ -1074,65 +967,86 @@ let max = api.kittens.get(2);
 
 {
   "status_code": 00,
-  "description": "Successful",
   "message": "Account lien details retrieved successfully",
   "data": {
-    "lien_type": "string",
-    "lien_definition": "string",
-    "lienRecord": {
-      "lien_originator": "string",
-      "lien_purpose": "string",
-      "lien_amount": "USD 250",
-      "lien_start_date": "09-22-2018",
-      "lien_expiry_date": "09-22-2018",
-      "lien_status": "string"
-    }
+    "lienRecord": [
+			{
+				"lien_id": "89988LN",
+				"lien_type": "Incomplete KYC",
+				"lien_definition": "Restricted access due to Incomplete KYC",
+				"lien_originator": "Business Unit",
+				"lien_purpose": "Restriction due to unavailable KYC",
+				"lien_amount": "250000",
+				"lien_start_date": "09-22-2018",
+				"lien_expiry_date": "09-22-2018",
+				"lien_mode": "Active"
+			}
+		]
   }
  }
 ```
 
+### HTTP Request
+
+`GET /accounts/{account_number}/lien​/{lien_id}`
+
+### Path Parameters
+
+Parameter | Type | Description
+--------- | ------- | -----------
+account_number | string | Specify the account number
+
+
+## Mark lien on account.
+
+Mark lien on an account. Only restricted parties have access to mark lien on a customer account. 
+
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/lien"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
+```
+```
+
+> The above command returns JSON structured like this:
+
+```json
+
+
+{
+  "status_code": 00,
+  "message": "Account lien details retrieved successfully",
+  "data": {
+    "lien_records": [
+			{
+				"lien_id": "89988LN",
+				"lien_type": "Incomplete KYC",
+				"lien_definition": "Restricted access due to Incomplete KYC",
+				"lien_originator": "Business Unit",
+				"lien_purpose": "Restriction due to unavailable KYC",
+				"lien_amount": "250000",
+				"lien_start_date": "09-22-2018",
+				"lien_expiry_date": "09-22-2018",
+				"lien_mode": "Active"
+			}
+		]
+  }
+ }
+```
 
 ### HTTP Request
 
 `GET /accounts/{account_number}/lien​/{lien_id}`
 
 
+## Retrieve issued devices
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+Retrieve details about issued devices or inventory on an account.
 
-
-
-
-## Request device changes or replacement
-
-Request changes or replacement devices or inventory.
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/accounts/issuedDevice​/requisition"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/issued-devices/"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
 > The above command returns JSON structured like this:
@@ -1140,40 +1054,80 @@ let max = api.kittens.get(2);
 ```json
 {
   "status_code": 00,
-  "description": "Successful",
   "message": "Issued device details retrieved successfully",
   "data": {
-  "issuedDeviceInstanceRecord": {
-    "issuedDeviceDescription": "string",
-    "issuedDeviceProperty": {
-      "issuedDevicePropertyType": {
-        "issuedDevicePropertyValue": "string"
-      },
-      "issuedDeviceStatus": "string"
-    }
-  },
-  "requestResponseRecord": {}
-}
+		"issued_device_records": [
+			{
+				"issued_device_reference_id": "23344A20I7",
+				"issued_device_serial": "AFF65AP",
+				"issued_device_type": "Hardware Token", 
+				"issued_device_description": "string",
+				"issued_deveice_status": "ISSUED"
+			}
+		]
+ }
+```
+
+### HTTP Request
+
+`GET /accounts/{account_number}/issued-devices/`
+
+### Path Parameters
+
+Parameter | Type | Description
+--------- | ------- | -----------
+account_number | string | Specify the account number
+
+
+
+
+## Request an issued device
+
+Place a requisition for an issued device. This API covers new request and replacement for an issued device. 
+
+```Shell
+curl -X POST "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/device-requisition/"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status_code": 00,
+  "message": "Issued device details retrieved successfully",
+  "data": {
+		"issued_device_type": "Hardware Token",
+		"issued_device_request_type": "replacement",
+		"issued_device_request_subtype": "lost",
+		"customer_reference_id": "23344A20I7",
+		"issued_device_description": "",
+		"issued_deveice_status": "initiated",
+		"device_delivery": {
+			"delivery_mode": "Physical",
+			"preferred_delivery_location": "branch",
+			"preferred_deliver_location_id": "3342"
+		}
+ }
 
 ```
 
 ### HTTP Request
 
-`PUT /accounts/issuedDevice​/requisition`
+`POST accounts/{account_number}/device-requisition/`
 
 ### Body Parameter(s)
 
 Parameter | Type | Description
 --------- | ------- | -----------
-issuedDeviceInstanceReference | string |Reference to the Issued Device instance
-issuedDeviceType | string |Reference to the Issued Device instance
-issuedDeviceStatus | string |Reference to the Issued Device instance
-
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-
-
+issued_device_type | string | Specify the type of issued device to be obtained. Options currently are "Hardware Token", "Token Pad", "Software Token"
+issued_device_request_type | string | Specify the type of requisition. Options are new and replacement.
+issued_device_request_subtype | string | (Optional) Specify the sub-type of request, usually needed for replacement. Options include "lost", "defective".
+customer_reference_id | string | (Optional) Specify a unique Customer Reference ID to be used for tracking this requisition.
+issued_device_desctiption | string | (Optional) State a description for the issued device
+device_delivery | string | Provide delivery details for collecting the device
+delivery_mode | string | Specify mode of delivery. Options are "Physical", "Electronic".
+preferred_delivery_location | string | Specify location of delivery. Options include "branch", "customer".
+preferred_delivery_location_id | string | Specify an address ID for the delivery. For branch, specify a branch_id; for customer, specify a customer_id.
 

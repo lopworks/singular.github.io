@@ -1,176 +1,358 @@
 # Payments
 
-Payment APIs provide interfaces to handle all payment transactions within financial institutions. They comprise of the following categories of APIs:
+Payments provide interfaces to manage financial transations and payments. They comprise of the following operations:
 
-- Collection APIs: provide interfaces to manage collections from bill payers.
+- Domestic Payments: 
+- International Payments: 
 
-## Get All Collections
 
-```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
+## Domestic Payments
+
+Create Domestic Payment Consents.
+
+```Shell
+curl -X POST "https://api.singularapi.com/api/v1/finance/00234000054/payments/domestic-payment-consents"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
+	-d '{
+  "Data": {
+		"read_refund_account": "No",
+		"initiation": {
+		  "instruction_identification": "string",
+		  "end_to_end_identification": "string",
+		  "local_instrument": "string",
+		  "instructed_amount": {
+			"amount": "string",
+			"currency": "string"
+		  },
+		  "debtor_account": {
+			"scheme_name": "string",
+			"identification": "string",
+			"name": "string",
+			"secondary_identification": "string"
+		  },
+		  "creditor_account": {
+			"scheme_name": "string",
+			"identification": "string",
+			"name": "string",
+			"secondary_identification": "string"
+		  },
+		  "creditor_postal_address": {
+			"address_type": "Business",
+			"department": "string",
+			"sub_department": "string",
+			"street_name": "string",
+			"building_number": "string",
+			"post_code": "string",
+			"town_name": "string",
+			"country_sub_division": "string",
+			"country": "string",
+			"address_line": [
+			  "string"
+			]
+		  },
+		  "remittance_information": {
+			"unstructured": "string",
+			"reference": "string"
+		  }
+		},
+		"Authorisation": {
+		  "AuthorisationType": "Any",
+		  "CompletionDateTime": "2020-12-17T08:26:08.090Z"
+		}
+	}'
 ```
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
 
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+{
+  "status_code": 00,
+  "message": "Account Details retrieved successfully",
+  "data": {
+	"read_refund_account": "No",
+		"initiation": {
+		  "instruction_identification": "string",
+		  "end_to_end_identification": "string",
+		  "local_instrument": "string",
+		  "instructed_amount": {
+			"amount": "string",
+			"currency": "string"
+		  },
+		  "debtor_account": {
+			"scheme_name": "string",
+			"identification": "string",
+			"name": "string",
+			"secondary_identification": "string"
+		  },
+		  "creditor_account": {
+			"scheme_name": "string",
+			"identification": "string",
+			"name": "string",
+			"secondary_identification": "string"
+		  },
+		  "creditor_postal_address": {
+			"address_type": "Business",
+			"department": "string",
+			"sub_department": "string",
+			"street_name": "string",
+			"building_number": "string",
+			"post_code": "string",
+			"town_name": "string",
+			"country_sub_division": "string",
+			"country": "string",
+			"address_line": [
+			  "string"
+			]
+		  },
+		  "remittance_information": {
+			"unstructured": "string",
+			"reference": "string"
+		  }
+		},
+	"Authorisation": {
+	  "AuthorisationType": "Any",
+	  "CompletionDateTime": "2020-12-17T08:26:08.090Z"
+	}
   }
-]
+}
 ```
-
-This endpoint retrieves all kittens.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST /payments/domestic-payment-consents`
 
-### Query Parameters
+### Body Parameters
 
-Parameter | Default | Description
+Parameter | Type | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+consent_id | string | Specify Account Holder Formal title
+Creation_date_time | string | Specify Account Holder First Name
+status | string | Optional. Specify Account Holder Middle Name
+status_update_date_time | string | Specify Account Holder Last Name
+read_refund_account | string | Specify Mother's Maiden Name
+cut_off_date_time | string | Specify Account Holder Gender
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+
+
+<aside class="notice">
+ ...
 </aside>
 
-## Get a Specific Kitten
 
-```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
 
-```python
-import kittn
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+## Get Domestic Payment Consents
 
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
+Get Domestic Payment Consents.
 
-```javascript
-const kittn = require('kittn');
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/payments/domestic-payment-consents​/{xxs2134grt}"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
+  "status_code": 00,
+  "message": "Domestic Payment Consents Read",
+  "data":{
+		"consent_id": "string",
+		"creation_date_time": "2020-12-17T10:50:25.782Z",
+		"status": "Authorised",
+		"status_update_date_time": "2020-12-17T10:50:25.783Z",
+		"read_refund_account": "No",
+		"cut_off_date_time": "2020-12-17T10:50:25.783Z",
+		"expected_execution_date_time": "2020-12-17T10:50:25.783Z",
+		"expected_settlement_date_time": "2020-12-17T10:50:25.783Z",
+		"charges": [
+		  {
+			"charge_bearer": "BorneByCreditor",
+			"type": "string",
+			"amount": {
+			  "amount": "string",
+			  "currency": "string"
+			}
+		  }
+		],
+		"initiation": {
+		  "instruction_identification": "string",
+		  "end_to_end_identification": "string",
+		  "local_instrument": "string",
+		  "instructed_amount": {
+			"amount": "string",
+			"currency": "string"
+		  },
+		  "debtor_account": {
+			"scheme_name": "string",
+			"identification": "string",
+			"name": "string",
+			"secondary_identification": "string"
+		  },
+		  "creditor_account": {
+			"scheme_name": "string",
+			"identification": "string",
+			"name": "string",
+			"secondary_identification": "string"
+		  },
+		  "creditor_postal_address": {
+			"address_type": "Business",
+			"department": "string",
+			"sub_department": "string",
+			"street_name": "string",
+			"building_number": "string",
+			"post_code": "string",
+			"town_name": "string",
+			"country_sub_division": "string",
+			"country": "string",
+			"address_line": [
+			  "string"
+			]
+		  },
+		  "remittance_information": {
+			"unstructured": "string",
+			"reference": "string"
+		  }
+		},
+		"authorisation": {
+		  "authorisation_type": "Any",
+		  "completion_date_time": "2020-12-17T10:50:25.783Z"
+		},
+		"debtor": {
+		  "name": "string"
+		}
+	  }
+ }
 ```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET /payments/domestic-payment-consents​/{consent_id}`
 
-### URL Parameters
+### Path Parameter(s)
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+Parameter | Type | Description
+--------- | ------- | -----------
+consent_id | string | 
 
-## Delete a Specific Kitten
 
-```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
+
+
+
+## Get Domestic Payment Consents Funds Confirmation
+
+Get Domestic Payment Consents.
+
+
+```Shell
+curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/payments/domestic-payment-consents​/{xxs2134grt}/funds-confirmation"
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
 ```
 
-```python
-import kittn
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
+
+
+
+## Create Domestic Payments
+
+Create Domestic Payments
+
+```Shell
+curl -X POST "https://api.singularapi.com/api/v1/finance/00234000054/payments/​domestic-payments
+  -H "Authorization: token-obtained-from-authorization"
+	-H 'Content-Type: application/json'
+	-d '{
+  "Data": {
+		"consent_id": "string",
+		"initiation": {
+		  "instruction_identification": "string",
+		  "end_to_end_identification": "string",
+		  "local_instrument": "string",
+		  "instructed_amount": {
+			"amount": "string",
+			"currency": "string"
+		  },
+		  "debtor_account": {
+			"scheme_name": "string",
+			"identification": "string",
+			"name": "string",
+			"secondary_identification": "string"
+		  },
+		  "creditor_account": {
+			"scheme_name": "string",
+			"identification": "string",
+			"name": "string",
+			"secondary_identification": "string"
+		  },
+		  "creditor_postal_address": {
+			"address_type": "Business",
+			"department": "string",
+			"sub_department": "string",
+			"street_name": "string",
+			"building_number": "string",
+			"post_code": "string",
+			"town_name": "string",
+			"country_sub_division": "string",
+			"country": "string",
+			"address_line": [
+			  "string"
+			]
+		  },
+		  "remittance_information": {
+			"unstructured": "string",
+			"reference": "string"
+		  }
+		}
+	  }'
 ```
 
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
 
-```javascript
-const kittn = require('kittn');
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
 
-> The above command returns JSON structured like this:
 
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
 
-This endpoint deletes a specific kitten.
+## Get Domestic Payments
 
-### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
 
-### URL Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+## Get Payment Details
+
+
+
+
+## Get Scheduled Payment Details
+
+
+
+
+## Get Standing Orders​ Payment Details
+
+
+
+
+## Get file Payment Details
+
+
+
+
+## Get International Payment Details
+
+
+
+
+## Get International Scheduled Payment Details
+
+
+
+
+## Get International Standing Orders​ Payment Details
 
