@@ -71,7 +71,7 @@ nationality | string | Specify Account Holder Nationality
 email| string | Specify Account Holder Email Address
 phone_number| string | Specify Account Holder Phone Number
 account_type| string | Specify Account Holder Type of Account
-currency | string | Choose an account currecny from the list of possible options from the finance house (options ar NGN, USD, EUR, GBP)
+currency | string | Choose an account currency from the list of possible options from the finance house (options ar NGN, USD, EUR, GBP)
 BVN | string | Bank verification number Required mainly for account opening in Nigeria
 
 
@@ -779,103 +779,6 @@ account_id | string | (Conditional). Specify Account Holder account identificati
 ### Response Body
 
 frequency - For direct debit frequency format, the Open Banking UK format is adopted and examples may be accessed at [link] (https://openbankinguk.github.io/read-write-api-site3/v3.1.7/resources-and-data-models/aisp/standing-orders.html#frequency-examples)
-
-
-
-## Obtain account rates
-
-Retrieve the rate on an account.
-
-```Shell
-curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/rate"
-  -H "Authorization: token-obtained-from-authorization"
-	-H 'Content-Type: application/json'
-```
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "status_code": 00,
-  "description": "Successful",
-  "message": "Account rate retrieved successfully",
-  "data": {
-		"account_number": "1234567890",
-		"account_id": "1234567890",
-		"account_type": "Savings",
-		"rate": 0.75
-  }
-}
-```
-
-### HTTP Request
-
-`GET /accounts/{account_number}/rate`
-
-### Path Parameter(s)
-
-Parameter | Type | Description
---------- | ------- | -----------
-account_number | string | Specify Account Holder account number
-
-### Query Parameter(s)
-
-Parameter | Type | Description
---------- | ------- | -----------
-account_id | string | (Optional). Specify the account number 
-
-
-
-
-## Get account product details
-
-Get account product details
-
-```Shell
-curl -X GET "https://api.singularapi.com/api/v1/finance/00234000054/accounts/1234567890/product"
-  -H "Authorization: token-obtained-from-authorization"
-	-H 'Content-Type: application/json'
-```
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-	"account_number": "1010119934",
-	"account_id": "1010119934",
-	"products":[
-		{
-		  "account_type": "Eazy Savings",
-		  "currency": "NGN",
-		  "status": "Active"
-		},
-		{
-		  "account_type": "Visa Account",
-		  "currency": "NGN",
-		  "status": "Expire"
-		}
-	]
-}
-```
-
-### HTTP Request
-
-`GET /accounts/{account_number}/product`
-
-### Path Parameters
-
-Parameter | Type | Description
---------- | ------- | -----------
-account_number | string | Specify the account number
-
-### Query Parameters
-
-Parameter | Type | Description
---------- | ------- | -----------
-account_id | string | (Optional). Specify the account number 
-
 
 
 ## Retrieve products on account
