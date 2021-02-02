@@ -9,10 +9,13 @@ toc_footers:
   - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
 
 includes:
+  - authentication
   - account
   - customer
+  - merchant
   - payment
-  - errors
+  - definitions
+  - utilities
 
 search: true
 
