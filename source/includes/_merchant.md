@@ -16,7 +16,7 @@ Create a new biller profile. This enables a merchant to register as a biller on 
 
 
 ```Shell
-curl -x POST "https://api.singularapi.com/api/v1/finance/00234000000/merchants/billers"
+curl -x POST "https://api.singularapi.com/api/v1/finance/00234000000/billers"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
   -d '{
@@ -95,7 +95,7 @@ curl -x POST "https://api.singularapi.com/api/v1/finance/00234000000/merchants/b
 
 ### HTTP Request
 
-`POST /merchants/billers`
+`POST /billers`
 
 ### Body Parameter(s)
 
@@ -128,7 +128,7 @@ contacts:email | string | Specify Email Address of Biller Contact
 This method retrieves biller details
 
 ```Shell
-curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/billers/001"
+curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/billers/001"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
  
@@ -142,7 +142,7 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
   "message": "Biller details Retrieved successfully",
   "data": {
 		"biller_id": "001",
-		"biller_name": "Abia State Infrastructural Development Agency",
+		"biller_name": "XYZ State Infrastructural Development Agency",
 		"phone_number": "08180226678",
 		"email": "infrastructure@engineering.com",
 		"address": "company address location",
@@ -165,7 +165,7 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 
 ### HTTP Request
 
-`GET /merchants/billers/{biller_id}`
+`GET /billers/{biller_id}`
 
 
 ### Path Parameter(s)
@@ -182,7 +182,7 @@ Update a biller profile. This method allows updating one or more parameters on a
 
 
 ```Shell
-curl -x PUT "https://api.singularapi.com/api/v1/finance/00234000000/merchants/billers/001"
+curl -x PUT "https://api.singularapi.com/api/v1/finance/00234000000/billers/001"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
   -d '{
@@ -226,7 +226,7 @@ curl -x PUT "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 
 ### HTTP Request
 
-`PUT /merchants/billers/{biller_id}`
+`PUT /billers/{biller_id}`
 
 
 ### Path Parameter(s)
@@ -259,7 +259,7 @@ Add one or more bank accounts to a biller. This operation associates financial a
 
 
 ```Shell
-curl -x PUT "https://api.singularapi.com/api/v1/finance/00234000000/merchants/billers/001/accounts"
+curl -x PUT "https://api.singularapi.com/api/v1/finance/00234000000/billers/001/accounts"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
   -d '{
@@ -314,7 +314,7 @@ curl -x PUT "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 
 ### HTTP Request
 
-`PUT /merchants/billers/{biller_id}/accounts`
+`PUT /billers/{biller_id}/accounts`
 
 ### Path Parameter(s)
 
@@ -349,7 +349,7 @@ Update an account on a biller. This method updates an account information on a b
 
 
 ```Shell
-curl -x PUT "https://api.singularapi.com/api/v1/finance/00234000000/merchants/billers/001/accounts/00209099"
+curl -x PUT "https://api.singularapi.com/api/v1/finance/00234000000/billers/001/accounts/00209099"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
   -d '{
@@ -399,7 +399,7 @@ curl -x PUT "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 
 ### HTTP Request
 
-`PUT /merchants/billers/{biller_id}/accounts/{account_id}`
+`PUT /billers/{biller_id}/accounts/{account_id}`
 
 ### Path Parameter(s)
 
@@ -438,7 +438,7 @@ Retrieve details of accounts on a biller. This method fetches all bank accounts 
 
 
 ```Shell
-curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/billers/001/accounts"
+curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/billers/001/accounts"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
   
@@ -482,7 +482,7 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 
 ### HTTP Request
 
-`GET /merchants/billers/{biller_id}/accounts`
+`GET /billers/{biller_id}/accounts`
 
 ### Path Parameter(s)
 
@@ -500,7 +500,7 @@ biller_id | string | Specify Biller identification number
 Retrieve Billers on the platform. This method retrieves a list of all billers registered on SingularAPI platform for a specific country within the financial domain.
 
 ```Shell
-curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/billers"
+curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/billers"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
  
@@ -515,7 +515,7 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
   "data": [ 
 	{
 		"biller_id": "001",
-		"biller_name": "Abia State Infrastructural Development Agency",
+		"biller_name": "XYZ State Infrastructural Development Agency",
 		"phone_number": "08180226678",
 		"email": "infrastructure@engineering.com",
 		"address": "company address location",
@@ -530,9 +530,9 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 	
 	{
 		"biller_id": "002",
-		"biller_name": "MTN",
+		"biller_name": "KSM Telco",
 		"phone_number": "080320000001",
-		"email": "itech@mtn.com",
+		"email": "itech@ksmtelco.com",
 		"address": "company address location",
 		"country": "Nigeria",
 		"category": {
@@ -545,9 +545,9 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 	
 	{
 		"biller_id": "003",
-		"biller_name": "ikeja Disco",
+		"biller_name": "Electripa",
 		"phone_number": "080320033301",
-		"email": "product@ikejadisco.com",
+		"email": "product@electripa.com",
 		"address": "company address location",
 		"country": "Nigeria",
 		"category": {
@@ -564,18 +564,18 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 
 ### HTTP Request
 
-`GET /merchants/billers`
+`GET /billers`
 
 
 
 
 ## Retrieve Biller Categories
 
-This method retrieves all biller categories
+This method retrieves all biller categories. It is a utility method that can be used to retrieve the list of categories under which billers are defined on the platform.
 
 
 ```Shell
-curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/biller-categories"
+curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/utilities/categories"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
   
@@ -626,7 +626,7 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 
 ### HTTP Request
 
-`GET /merchants/biller-categories`
+`GET /utilities/categories`
 
 
 
@@ -639,7 +639,7 @@ This method retrieves billers by category
 
 
 ```Shell
-curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/billers?categories=004"
+curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/billers?categories=004"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
   
@@ -654,9 +654,9 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
   "data": [ 			
 			{
 				"biller_id": "002",
-				"biller_name": "MTN",
+				"biller_name": "KSM Telco",
 				"phone_number": "080320000001",
-				"email": "itech@mtn.com",
+				"email": "itech@ksmtelco.com",
 				"address": "company address location",
 				"country": "Nigeria",
 				"category": {
@@ -673,7 +673,7 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/merchants/bi
 
 ### HTTP Request
 
-`GET /merchants/billers?category={category_id}`
+`GET /billers?category={category_id}`
 
 ### Path Parameter(s)
 
@@ -693,15 +693,40 @@ This method adds a new product to a biller
 
 
 ```Shell
-curl -x POST "https://api.singularapi.com/api/v1/finance/00234000000/finance/00234000000/merchants/billers/001/products"
+curl -x POST "https://api.singularapi.com/api/v1/finance/00234000000/billers/003/products"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
   -d '{
-		"product_name": "Prepaid"
 		"products": [
-			{ "product_name": "Prepaid" },
-			{ "product_name": "Postpaid" },
-			{ "product_name": "Token Purchase" }
+			{ 
+				"product_name": "Prepaid",
+				"product_description": "Prepaid unit purchase",
+				"amount": " ",
+				"currency": "NGN",
+				"product_meta": {
+					"interval": "",
+				}
+			},
+			{ 
+				"product_name": "Postpaid",
+				"product_description": "Postpaid unit puchase",
+				"amount": " ",
+				"currency": "NGN",
+				"interval": "MONTHLY"
+				"product_meta": {
+					"account_id": "",
+					"interval": "MONTHLY",
+				}
+			},
+			{ 
+				"product_name": "Token Purchase",
+				"product_description": "Generic Token Puchase",
+				"amount": " ",
+				"currency": "NGN",
+				"product_meta": {
+					"interval": "",
+				}
+			}
 		]
 	}'
 ```
@@ -714,19 +739,39 @@ curl -x POST "https://api.singularapi.com/api/v1/finance/00234000000/finance/002
 	"message": "Product added to biller successfully",
 	"data": {
 		"biller_id": "003",
-		"biller_name": "ABC Disco",
+		"biller_name": "Electripa",
 		"products":  [
 			{
-				"product_id": "009",
-				"product_name": "Prepaid"
+				"product_id": "232345",
+				"product_name": "Prepaid",
+				"product_description": "Prepaid unit purchase",
+				"amount": " ",
+				"currency": "NGN",
+				"product_meta": {
+					"interval": "",
+				}
 			},
 			{
-				"product_id": "010",
-				"product_name": "Postpaid"
+				"product_id": "456688",
+				"product_name": "Postpaid",
+				"product_description": "Postpaid unit puchase",
+				"amount": " ",
+				"currency": "NGN",
+				"interval": "MONTHLY"
+				"product_meta": {
+					"account_id": "",
+					"interval": "MONTHLY",
+				}
 			},
 			{
-				"product_id": "011",
-				"product_name": "Token Purchase"
+				"product_id": "656677",
+				"product_name": "Token Purchase",
+				"product_description": "Generic Token Puchase",
+				"amount": " ",
+				"currency": "NGN",
+				"product_meta": {
+					"interval": "",
+				}
 			}
 		
 		]
@@ -737,7 +782,7 @@ curl -x POST "https://api.singularapi.com/api/v1/finance/00234000000/finance/002
 
 ### HTTP Request
 
-`POST /merchants/billers/{biller_id}/products`
+`POST /billers/{biller_id}/products`
 
 ### Path Parameter(s)
 
@@ -750,7 +795,12 @@ biller_id | string | Specify Biller identification number
 Parameter | Type | Description
 --------- | ------- | -----------
 products | array object | Specify product item(s) to be added
-product_name | string | Specify product name
+product_description | string | Specify product description
+amount | string | Optional. Specify product amount
+currency | string | Specify product amount currency
+product_meta | string | Optional. Specify one or many product misc object(s) to be added to product.
+product_meta:account_id | string | Optional. Specify the bank account identification number of account that receives payment for this product.
+product_meta:interval | string | Optional. Specify the duration the product is valid
 
 
 
@@ -766,7 +816,7 @@ This method retrieves all products on a biller
 
 
 ```Shell
-curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/finance/00234000000/merchants/billers/001/products"
+curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/billers/003/products"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
  
@@ -780,16 +830,39 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/finance/0023
 	"message": "Products retrieved successfully",
 	"data": {
 		"biller_id": "003",
-		"biller_name": "ikeja Disco",
-		"products": [
+		"biller_name": "Electripa",
+		"products":  [
 			{
-				"product_id": "010",
-				"product_name": "Postpaid"
+				"product_id": "232345",
+				"product_name": "Prepaid",
+				"product_description": "Prepaid unit purchase",
+				"amount": " ",
+				"currency": "NGN",
+				"product_meta": {
+					"interval": "",
+				}
 			},
-						
 			{
-				"product_id": "011",
-				"product_name": "Token Purchase"
+				"product_id": "456688",
+				"product_name": "Postpaid",
+				"product_description": "Postpaid unit puchase",
+				"amount": " ",
+				"currency": "NGN",
+				"interval": "MONTHLY"
+				"product_meta": {
+					"account_id": "",
+					"interval": "MONTHLY",
+				}
+			},
+			{
+				"product_id": "656677",
+				"product_name": "Token Purchase",
+				"product_description": "Generic Token Puchase",
+				"amount": " ",
+				"currency": "NGN",
+				"product_meta": {
+					"interval": "",
+				}
 			}
 		]
 	
@@ -800,7 +873,7 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/finance/0023
 
 ### HTTP Request
 
-`GET /merchants/billers/{biller_id}/products`
+`GET /billers/{biller_id}/products`
 
 ### Path Parameter(s)
 
@@ -818,7 +891,7 @@ This method retrieves details of a product
 
 
 ```Shell
-curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/finance/00234000000/merchants/billers/003/products/656677"
+curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/billers/003/products/656677"
   -H "Authorization: token-obtained-from-authorization"
   -H 'Content-Type: application/json'
  
@@ -832,10 +905,10 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/finance/0023
 	"message": "Product details retrieved successfully",
 	"data": {
 		"biller_id": "003",
-		"biller_name": "Kiakia Disco",
+		"biller_name": "Electripa",
 		"phone_number": "080320033301",
-		"email": "product@kiakiadisco.com",
-		"website": "http://www.kiakiadisco.com",
+		"email": "product@electripa.com",
+		"website": "http://www.electripa.com",
 		"address": "company address location",
 		"city": "Funtua",
 		"state": "Kaduna",
@@ -848,7 +921,11 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/finance/0023
 			"product_id": "656677",
 			"product_name": "Token Purchase",
 			"product_description": "Generic Token Puchase",
-			"product_meta": {}
+			"amount": " ",
+			"currency": "NGN",
+			"product_meta": {
+				"interval": ""
+			}
 		}
 	}
 }
@@ -856,7 +933,7 @@ curl -x GET "https://api.singularapi.com/api/v1/finance/00234000000/finance/0023
 
 ### HTTP Request
 
-`GET /merchants/billers/{biller_id}/products/{product_id}`
+`GET /billers/{biller_id}/products/{product_id}`
 
 ### Path Parameter(s)
 
